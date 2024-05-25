@@ -25,15 +25,15 @@ export const putDb = async (content) => {
   // First, create a variable, and set it to asyncronously await the opening of the database. Replace the items in all caps
   
   // TODO: Change YOUR_OPEN_DB_VAR to whatever variable name you wanT. Note that you'll then need to change any other occcurences of YOUR_OPEN_DB_VAR to the same variable name.
-  const YOUR_OPEN_DB_VAR = await openDB(DB_NAME, 1);
+  const db = await openDB(DB_NAME, 1);
 
   // TODO: Now create a variable for the transaction; again, this will be referenced below.
-  const YOUR_TX_VAR = YOUR_OPEN_DB_VAR.transaction(DB_NAME, 'readwrite');
+  const tx = db.transaction(DB_NAME, 'readwrite');
 
   // TODO: Now create a variable for the store
-  const YOUR_STORE_VAR = YOUR_TX_VAR.objectStore(DB_NAME);
+  const store = tx.objectStore(DB_NAME);
 
-  const request = YOUR_STORE_VAR.put({ id: 1, value: content });
+  const request = store.put({ id: 1, value: content });
   const result = await request;
   console.log('🚀 - data saved to the database', result.value);
 };
@@ -45,6 +45,11 @@ export const getDb = async () => {
   // You can duplicate the same lines of code from above, except that the transaction will be 'readonly'
   
   // TODO: Copy LINES 28, 31 and 34 above; the new line 31 code should be "readonly"
+  const db = await openDB(DB_NAME, 1);
+
+  const tx = db.transaction(DB_NAME, 'readonly');
+
+  const store = tx.objectStore(DB_NAME);
 
   // Leave the rest as-is
   const request = store.get(1);
